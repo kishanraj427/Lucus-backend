@@ -1,3 +1,3 @@
-export * from './AllUserRequest';
-export * from './AllUserResponse';
-export * from './AllUserCommon';
+export * from "./UserRequest";
+export * from "./UserResponse";
+export * from "./UserCommon";

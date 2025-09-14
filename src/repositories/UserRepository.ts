@@ -1,11 +1,11 @@
 import {
   GetAllUserResponse,
   RegisterUserResponse,
-} from "../models/users/AllUserResponse";
+} from "../models/users/UserResponse";
 import {
   LogInUserRequest,
   RegisterUserRequest,
-} from "../models/users/AllUserRequest";
+} from "../models/users/UserRequest";
 import { UserDbQueryExecuter } from "../dbexecuters/UserDbQueryExecuter";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../middleware/auth";
@@ -48,35 +48,15 @@ export class UserRepository {
       token: null,
       user: null,
     };
-    const userExists =
-      (await UserDbQueryExecuter.checkUserByEmail(user.email)) ?? [];
-    if (!userExists.length) {
-      response.message = "User not found";
+    const { userData, message } = await UserDbQueryExecuter.loginUser(user);
+    if (!userData) {
+      response.message = message;
       return response;
     } else {
-      const userData = userExists[0];
-      console.log(user);
-      console.log(userData);
-      const isValidPassword = await bcrypt.compare(
-        user.password,
-        userData.password
-      );
-      console.log(await bcrypt.hash(user.password, 10));
-      console.log();
-      if (isValidPassword) {
-        response.message = "User logged in successfully";
-        response.isSuccess = true;
-        response.user = {
-          id: userData.id,
-          name: userData.name,
-          email: userData.email,
-        };
-        // Generate token (assuming you have a function to generate JWT)
-        response.token = generateToken(userData.id);
-      } else {
-        response.message = "Invalid password";
-        response.isSuccess = false;
-      }
+      response.token = generateToken(userData.id);
+      response.user = userData;
+      response.isSuccess = true;
+      response.message = "User logged in successfully";
     }
     return response;
   }
