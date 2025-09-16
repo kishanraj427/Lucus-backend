@@ -1,4 +1,4 @@
-import { StoreDbQueryExecuter } from "../dbexecuters/StoreDbQueryExecutore";
+import { StoreDbQueryExecuter } from "../dbexecuters/StoreDbQueryExecuter";
 import * as AllModels from "../models/AllModels";
 export class StoreRepository {
   static async getAllStores(filters: AllModels.GetAllStoreRequest) {
