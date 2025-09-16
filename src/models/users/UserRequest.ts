@@ -1,7 +1,7 @@
 import z from "zod";
 
 export const ZLogInUserRequest = z.object({
-  email: z.string().email(),
+  email: z.email(),
   phone: z.string().optional().nullable(),
   password: z.string().refine((val) => val.length > 0),
 });

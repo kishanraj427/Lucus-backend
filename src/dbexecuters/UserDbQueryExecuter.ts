@@ -1,4 +1,4 @@
-import * as Models from "../models/AllModels";
+import * as AllModels from "../models/AllModels";
 import { pool } from "../config/db";
 import bcrypt from "bcryptjs";
 
@@ -22,7 +22,7 @@ export class UserDbQueryExecuter {
     }
   }
 
-  static async loginUser(user: Models.LogInUserRequest) {
+  static async loginUser(user: AllModels.LogInUserRequest) {
     const sqlData: any[] = [1];
     const filters: string[] = [" is_active = ? "];
     if (user.email) {
@@ -77,7 +77,7 @@ export class UserDbQueryExecuter {
       `SELECT id, name, email, is_active AS isActive, last_login_at AS lastLogin, phone FROM users WHERE ` +
       filters.join(" OR ");
     try {
-      const [rows] = (await pool.query(query, sqlData)) as [Models.User[], any];
+      const [rows] = (await pool.query(query, sqlData)) as [AllModels.User[], any];
       return rows.length ? rows[0] : null;
     } catch (error) {
       console.error("Error checking user existence:", error);
@@ -85,7 +85,7 @@ export class UserDbQueryExecuter {
     }
   }
 
-  static async createUser(user: Models.RegisterUserRequest) {
+  static async createUser(user: AllModels.RegisterUserRequest) {
     const query = `INSERT INTO users (name, email, password, phone, last_login_at) VALUES (?, ?, ?, ?, ?)`;
     const sqlData = [
       user.name,
@@ -102,7 +102,7 @@ export class UserDbQueryExecuter {
           id: (result[0] as any).insertId,
           name: user.name,
           email: user.email,
-          phone: user.phone ?? null,
+          phone: user.phone,
           isActive: true,
           lastLogin: new Date(),
           createdAt: new Date(),
@@ -119,7 +119,7 @@ export class UserDbQueryExecuter {
     const query = `SELECT id, name, email, is_active AS isActive, last_login_at as lastLogin, phone, created_at AS createAt, updated_at AS updatedAt FROM users`;
     try {
       const result = await pool.query(query);
-      return result[0] as Models.User[];
+      return result[0] as AllModels.User[];
     } catch (error) {
       console.error("Error fetching users:", error);
       throw new Error("Database error");

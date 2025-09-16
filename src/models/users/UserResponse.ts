@@ -1,14 +1,14 @@
-import { User } from "./UserCommon";
+import z from "zod";
+import { ApiResponseSchema } from "../base";
+import { UserSchema } from "./UserCommon";
 
-export interface RegisterUserResponse {
-  message: string;
-  isSuccess: boolean;
-  token: string | null;
-  user: User | null;
-}
+export const RegisterUserResponseSchema = ApiResponseSchema.extend({
+  token: z.string().optional().nullable(),
+  user: UserSchema.optional().nullable(),
+});
+export type RegisterUserResponse = z.infer<typeof RegisterUserResponseSchema>;
 
-export interface GetAllUserResponse {
-  message: string;
-  isSuccess: boolean;
-  users: User[];
-}
+export const GetAllUserResponseSchema = ApiResponseSchema.extend({
+  users: UserSchema.array(),
+});
+export type GetAllUserResponse = z.infer<typeof GetAllUserResponseSchema>;

@@ -4,6 +4,7 @@ import { UsersRouter } from "./routes/UserRoute";
 import { errorHandler } from "./middleware/errorHandler";
 import cookieParser from "cookie-parser";
 import { authMiddleware } from "./middleware/auth";
+import { StoresRouter } from "./routes/StoreRoute";
 
 dotenv.config();
 
@@ -20,6 +21,8 @@ app.get("/api/check-token", authMiddleware, (req, res) => {
 });
 
 app.use("/api/users", UsersRouter);
+
+app.use("/api/stores", StoresRouter);
 
 app.use(errorHandler);
 
