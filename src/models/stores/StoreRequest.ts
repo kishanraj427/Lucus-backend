@@ -14,10 +14,3 @@ export const UpdateStoreRequestSchema = StoreBaseSchema.extend({
   id: z.number(),
 });
 export type UpdateStoreRequest = z.infer<typeof UpdateStoreRequestSchema>;
-
-export const DeactivateStoreRequestSchema = z.object({
-  id: z.number(),
-});
-export type DeactivateStoreRequest = z.infer<
-  typeof DeactivateStoreRequestSchema
->;

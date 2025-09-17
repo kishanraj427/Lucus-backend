@@ -23,9 +23,23 @@ export class StoreRepository {
     };
     const createdStore = await StoreDbQueryExecuter.createStore(store);
     if (createdStore) {
-      response.message = "Store fetched successfully";
+      response.message = "Store created successfully";
       response.isSuccess = true;
       response.store = createdStore.store;
+    }
+    return response;
+  }
+
+  static async getStoreById(storeId: number) {
+    const response: AllModels.GetStoreResponse = {
+      message: "Failed to create store",
+      isSuccess: false,
+    };
+    const store = await StoreDbQueryExecuter.getStoreById(storeId);
+    if (store) {
+      response.message = "Store fetched successfully";
+      response.isSuccess = true;
+      response.store = store;
     }
     return response;
   }
@@ -35,21 +49,24 @@ export class StoreRepository {
       message: "Failed to update store data",
       isSuccess: false,
     };
-    const updatedStore = await StoreDbQueryExecuter.upadateStore(store);
-    if (updatedStore) {
-      response.message = "Store fetched successfully";
-      response.isSuccess = true;
-      response.store = updatedStore;
+    const isUpdated = await StoreDbQueryExecuter.updateStore(store);
+    if (isUpdated) {
+      const updatedStore = await StoreDbQueryExecuter.getStoreById(store.id);
+      if (updatedStore) {
+        response.message = "Store updated successfully";
+        response.isSuccess = true;
+        response.store = updatedStore;
+      }
     }
     return response;
   }
 
-  static async deactivateStore({ id }: AllModels.DeactivateStoreRequest) {
+  static async deactivateStore(storeId: number) {
     const response: AllModels.DeactivateStoreResponse = {
       message: "Failed to deactivate store",
       isSuccess: false,
     };
-    const stores = await StoreDbQueryExecuter.deactivateStore(id);
+    const stores = await StoreDbQueryExecuter.deactivateStore(storeId);
     if (stores) {
       response.message = "Store deactivated successfully";
       response.isSuccess = true;

@@ -12,6 +12,8 @@ StoresRouter.post(
   StoreController.getAllStored
 );
 
+StoresRouter.get("/:id", authMiddleware, StoreController.getStoreById);
+
 StoresRouter.post(
   "/create",
   authMiddleware,
@@ -20,15 +22,10 @@ StoresRouter.post(
 );
 
 StoresRouter.post(
-  "/update",
+  "/:id",
   authMiddleware,
   validateZodSchema(Models.UpdateStoreRequestSchema),
   StoreController.updateStore
 );
 
-StoresRouter.post(
-  "/deactivate",
-  authMiddleware,
-  validateZodSchema(Models.DeactivateStoreRequestSchema),
-  StoreController.deactivateStore
-);
+StoresRouter.delete("/:id", authMiddleware, StoreController.deactivateStore);

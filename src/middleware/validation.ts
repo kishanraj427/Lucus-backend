@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response, RequestHandler } from "express";
-import { ZodSchema, ZodError } from "zod";
+import { ZodType, ZodError } from "zod";
 
-export function validateZodSchema<T>(schema: ZodSchema<T>): RequestHandler {
+export function validateZodSchema<T>(schema: ZodType<T>): RequestHandler {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
       const parsed = schema.parse(req.body);
@@ -9,14 +9,13 @@ export function validateZodSchema<T>(schema: ZodSchema<T>): RequestHandler {
       next();
     } catch (err) {
       if (err instanceof ZodError) {
-        const formatted = err.errors.map((e) => ({
+        const formatted = err.issues.map((e) => ({
           field: e.path.join("."),
           message: e.message,
         }));
-        res
+        return res
           .status(400)
-          .json({ message: "Invalid request body", errors: formatted });
-        return;
+          .json({ message: "Invalid request body", error: formatted });
       }
       next(err);
     }

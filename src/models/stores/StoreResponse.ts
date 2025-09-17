@@ -12,8 +12,11 @@ export const CreateStoreResponseSchema = ApiResponseSchema.extend({
 });
 export type CreateStoreResponse = z.infer<typeof CreateStoreResponseSchema>;
 
+export const GetStoreResponseSchema = CreateStoreResponseSchema;
+export type GetStoreResponse = z.infer<typeof GetStoreResponseSchema>;
+
 export const UpdateStoreResponseSchema = CreateStoreResponseSchema;
-export type UpdateStoreResponse = z.infer<typeof UpdateStoreResponseSchema>;
+export type UpdateStoreResponse = z.infer<typeof GetStoreResponseSchema>;
 
 export const DeactivateStoreResponseSchema = ApiResponseSchema;
 export type DeactivateStoreResponse = z.infer<
