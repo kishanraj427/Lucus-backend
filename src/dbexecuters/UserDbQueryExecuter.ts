@@ -77,7 +77,10 @@ export class UserDbQueryExecuter {
       `SELECT id, name, email, is_active AS isActive, last_login_at AS lastLogin, phone FROM users WHERE ` +
       filters.join(" OR ");
     try {
-      const [rows] = (await pool.query(query, sqlData)) as [AllModels.User[], any];
+      const [rows] = (await pool.query(query, sqlData)) as [
+        AllModels.User[],
+        any,
+      ];
       return rows.length ? rows[0] : null;
     } catch (error) {
       console.error("Error checking user existence:", error);
