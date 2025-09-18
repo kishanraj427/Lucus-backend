@@ -10,13 +10,13 @@ UsersRouter.get("/", authMiddleware, UserController.getAllUsers);
 
 UsersRouter.post(
   "/register",
-  validateZodSchema(Models.ZRegisterUserRequest),
+  validateZodSchema(Models.RegisterUserRequestSchema),
   UserController.registerUser
 );
 
 UsersRouter.post(
   "/login",
-  validateZodSchema(Models.ZLogInUserRequest),
+  validateZodSchema(Models.LogInUserRequestSchema),
   UserController.logInUser
 );
 
