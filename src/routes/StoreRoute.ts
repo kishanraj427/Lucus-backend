@@ -9,7 +9,7 @@ export const StoresRouter = Router();
 StoresRouter.post(
   "/",
   validateZodSchema(Models.GetAllStoreRequestSchema),
-  StoreController.getAllStored
+  StoreController.getAllStores
 );
 
 StoresRouter.get("/:id", authMiddleware, StoreController.getStoreById);
