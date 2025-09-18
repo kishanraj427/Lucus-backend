@@ -3,7 +3,7 @@ import * as AllModels from "../models/AllModels";
 import { StoreRepository } from "../repositories/StoreRepository";
 
 export class StoreController {
-  static async getAllStored(req: Request, res: Response, next: NextFunction) {
+  static async getAllStores(req: Request, res: Response, next: NextFunction) {
     const request = req.body as AllModels.GetAllStoreRequest;
     const response = await StoreRepository.getAllStores(request);
     res.status(response.isSuccess ? 200 : 500).send(response);
